@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docking Score Calculator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1, h2, h3 {
+            color: #007BFF;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: block;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        h2, h3 {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        /* 隐藏元素 */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Docking Score Calculator</h1>
+    
+    <form id="calculatorForm" method="post" action="/">
+        <label for="protein_name1">Protein 1 Name:</label>
+        <input type="text" id="protein_name1" name="protein_name1" required>
+        <br>
+        <label for="protein_name2">Protein 2 Name:</label>
+        <input type="text" id="protein_name2" name="protein_name2" required>
+        <br>
+        <button type="submit">Calculate Docking Score</button>
+        <button id="closeFormButton" class="hidden">Close Calculator</button>
+        <a href="static/help.html" target="_blank">How to use?</a>
+    </form>
+
+    <button id="showFormButton" class="hidden">Show Calculator</button>
+
+    {% if docking_result %}
+    <h2>{{ docking_result }}</h2>
+    {% endif %}
+
+    {% if interaction_result %}
+    <h3>{{ interaction_result }}</h3>
+    {% if interaction_plot_path %}
+    <img src="{{ interaction_plot_path }}" alt="Interaction Plot">
+    {% endif %}
+    {% endif %}
+
+    {% if calculation_steps_data %}
+    <h3>Energy Calculation Steps:</h3>
+    <table border="1">
+        <tr>
+            <th>Step</th>
+            <th>Protein Pair</th>
+            <th>Energy Difference</th>
+        </tr>
+        {% for step_data in calculation_steps_data %}
+        <tr>
+            <td>{{ step_data.step }}</td>
+            <td>{{ step_data.protein_pair }}</td>
+            <td>{{ step_data.energy_diff }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calculatorTitle = document.querySelector('h1');
+            var calculatorForm = document.getElementById('calculatorForm');
+            var showFormButton = document.getElementById('showFormButton');
+            var closeFormButton = document.getElementById('closeFormButton');
+
+            // 显示输入表单
+            function showForm() {
+                calculatorTitle.classList.remove('hidden');
+                calculatorForm.classList.remove('hidden');
+                showFormButton.classList.add('hidden');
+                closeFormButton.classList.remove('hidden');
+                // 禁止滚动页面
+                document.body.style.overflow = 'hidden';
+            }
+
+            // 隐藏输入表单
+            function hideForm() {
+                calculatorTitle.classList.add('hidden');
+                calculatorForm.classList.add('hidden');
+                showFormButton.classList.remove('hidden');
+                closeFormButton.classList.add('hidden');
+                // 恢复滚动页面
+                document.body.style.overflow = 'auto';
+            }
+
+            // 初始时显示按钮
+            showFormButton.classList.remove('hidden');
+
+            // 点击按钮显示输入表单
+            showFormButton.addEventListener('click', showForm);
+
+            // 点击关闭按钮隐藏输入表单
+            closeFormButton.addEventListener('click', hideForm);
+
+            // 在这个函数中设置合适的条件，例如在显示数据后再显示按钮
+            function updateUI() {
+                if (/* 合适的条件 */) {
+                    showFormButton.classList.remove('hidden');
+                }
+            }
+
+            // 你的数据显示后，调用这个函数再次显示按钮
+            // 例如在合适的地方调用 updateUI();
+        });
+    </script>
+</body>
+</html>
