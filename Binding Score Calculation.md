@@ -35,9 +35,3 @@ The CLI script provides a command-line interface for calculating the binding sco
    - The script prints the number of conformers and the number of valid docking scores.
    - If any energy calculations fail for a specific conformation, a warning message is printed, and the failed conformations are tracked.
    - The final binding score is calculated as the mean of valid docking scores.
-
-7. **Interaction Simulation Visualization:**
-   
-   - After the binding score calculation, the script attempts to visualize the interaction by superimposing the two proteins' structures.
-   - It uses a 3D scatter plot to display the protein structures in different colors, and the plot is shown using Matplotlib.
-   - The visualization is provided to help understand the spatial arrangement of the proteins during the interaction.
